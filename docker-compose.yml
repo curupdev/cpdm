@@ -7,20 +7,11 @@ services:
       dockerfile: Dockerfile
     container_name: proxy_dns_manager
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    env_file:
+      - .env
     environment:
+      - PORT=${PORT:-45912}
       - NODE_ENV=production
-      - DB_HOST=10.90.135.80
-      - DB_USER=proxy_admin
-      - DB_PASSWORD=proxy_secure_pass
-      - DB_NAME=proxy_manager
-      - PROXY_NODE_01=10.90.135.11
-      - PROXY_NODE_02=10.90.135.12
-      - VIP_ADDRESS=10.90.135.10
-      - SSH_USER=root
-      - SSH_KEY_PATH=/root/.ssh/id_rsa
-      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
     volumes:
       # Mount the host SSH directory (Management Node 10.90.135.21) so the Node.js app can securely access nodes without passwords
       - ~/.ssh:/root/.ssh:ro
